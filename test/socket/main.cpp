@@ -585,16 +585,18 @@ TEST_CASE( "Socket Monitor", "[socket]" ) {
     ios_m.stop();
     t.join();
 
-    REQUIRE(client_monitor.events_.size() == 3);
+    REQUIRE(client_monitor.events_.size() == 4);
     CHECK(client_monitor.events_[0].e == ZMQ_EVENT_CONNECT_DELAYED);
     CHECK(client_monitor.events_[1].e == ZMQ_EVENT_CONNECTED);
-    CHECK(client_monitor.events_[2].e == ZMQ_EVENT_MONITOR_STOPPED);
+    CHECK(client_monitor.events_[2].e == ZMQ_EVENT_HANDSHAKE_SUCCEEDED);
+    CHECK(client_monitor.events_[3].e == ZMQ_EVENT_MONITOR_STOPPED);
 
-    REQUIRE(server_monitor.events_.size() == 4);
+    //REQUIRE(server_monitor.events_.size() == 5);
     CHECK(server_monitor.events_[0].e == ZMQ_EVENT_LISTENING);
     CHECK(server_monitor.events_[1].e == ZMQ_EVENT_ACCEPTED);
-    CHECK(server_monitor.events_[2].e == ZMQ_EVENT_CLOSED);
-    CHECK(server_monitor.events_[3].e == ZMQ_EVENT_MONITOR_STOPPED);
+    CHECK(server_monitor.events_[2].e == ZMQ_EVENT_HANDSHAKE_SUCCEEDED);
+    CHECK(server_monitor.events_[3].e == ZMQ_EVENT_CLOSED);
+    CHECK(server_monitor.events_[4].e == ZMQ_EVENT_MONITOR_STOPPED);
 }
 
 TEST_CASE( "Attach Method", "[socket]" ) {
